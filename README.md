@@ -36,7 +36,7 @@ A API estará em `http://localhost:3000`; a documentação interativa estará em
 | `NODE_ENV` | Não | `development` ou `production`. |
 | `PORT` | Não | Porta HTTP; o Render define esta variável automaticamente. |
 | `FRONTEND_URL` | Sim em produção | Origem exata permitida pelo CORS, por exemplo `https://meu-front.vercel.app`. |
-| `DATABASE_URL` | Sim | String de conexão PostgreSQL do Aiven. |
+| `DATABASE_URL` | Sim | String de conexão PostgreSQL do Aiven. O parâmetro `sslmode` nela é ignorado; use `DATABASE_SSL` para controlar TLS. |
 | `DATABASE_SSL` | Sim no Aiven | Use `true` para conexão TLS. |
 | `JWT_SECRET` | Sim | Segredo longo, aleatório e exclusivo do ambiente. |
 | `JWT_EXPIRES_IN` | Não | Duração dos tokens, padrão `8h`. |
@@ -79,7 +79,8 @@ Content-Type: application/json
 1. Crie um serviço PostgreSQL no Aiven e copie a string de conexão TLS para `DATABASE_URL`.
 2. Faça push deste repositório para o GitHub e crie um Web Service no Render, ou use o `render.yaml` incluso.
 3. No Render, preencha `DATABASE_URL` e `FRONTEND_URL`; confirme `DATABASE_SSL=true` e gere um `JWT_SECRET` forte.
-4. Execute `npm run migrate` como comando de pré-deploy. O Render então inicia com `npm start`.
-5. No Vercel, configure a URL pública da API como variável do front-end e use a URL do Vercel em `FRONTEND_URL` no Render.
+4. Antes do primeiro deploy (e antes de cada migration nova), configure o `.env` local com a `DATABASE_URL` do Aiven e execute `npm run migrate`. Esse comando conecta diretamente ao Aiven e registra as migrations já aplicadas; portanto é seguro executá-lo novamente.
+5. No Render, use `npm install` como Build Command e `npm start` como Start Command. Não configure Pre-deploy Command no plano Free.
+6. No Vercel, configure a URL pública da API como variável do front-end e use a URL do Vercel em `FRONTEND_URL` no Render.
 
 Use `GET /health` como health check do Render.
