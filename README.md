@@ -36,6 +36,7 @@ A API estará em `http://localhost:3000`; a documentação interativa estará em
 | `NODE_ENV` | Não | `development` ou `production`. |
 | `PORT` | Não | Porta HTTP; o Render define esta variável automaticamente. |
 | `FRONTEND_URL` | Sim em produção | Origem exata permitida pelo CORS, por exemplo `https://meu-front.vercel.app`. |
+| `API_URL` | Não localmente; recomendada em produção | URL pública da API, por exemplo `https://minha-api.onrender.com`. Permite testar a API pelo Swagger hospedado. |
 | `DATABASE_URL` | Sim | String de conexão PostgreSQL do Aiven. O parâmetro `sslmode` nela é ignorado; use `DATABASE_SSL` para controlar TLS. |
 | `DATABASE_SSL` | Sim no Aiven | Use `true` para conexão TLS. |
 | `JWT_SECRET` | Sim | Segredo longo, aleatório e exclusivo do ambiente. |

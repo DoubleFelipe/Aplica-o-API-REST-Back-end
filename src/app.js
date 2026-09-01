@@ -10,11 +10,18 @@ const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 
 const app = express();
 const allowedOrigin = process.env.FRONTEND_URL;
+const port = process.env.PORT || 3000;
+const allowedOrigins = new Set([
+  allowedOrigin,
+  process.env.API_URL,
+  `http://localhost:${port}`,
+  `http://127.0.0.1:${port}`
+].filter(Boolean));
 
 app.use(helmet());
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || (allowedOrigin && origin === allowedOrigin)) return callback(null, true);
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
     return callback(new Error('Origem não permitida por CORS.'));
   },
   methods: ['GET', 'POST', 'PATCH'],
